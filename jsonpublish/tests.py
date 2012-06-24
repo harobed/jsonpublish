@@ -69,3 +69,22 @@ class TestGlobalJSONEncoder(unittest.TestCase):
         self.assertEqual(
             dumps(jsonsettings(o, with_year=False)),
             '"05-08"')
+
+    def test_json_method(self):
+        from jsonpublish import dumps
+
+        class User(object):
+            def __init__(self, username, birthday):
+                self.username = username
+                self.birthday = birthday
+
+            def __json__(self):
+                return {
+                    "username": self.username,
+                    "birthday": self.birthday
+                }
+
+        self.assertEqual(
+            dumps(User("andrey", 1987)),
+            '{"username": "andrey", "birthday": 1987}'
+        )

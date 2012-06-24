@@ -76,6 +76,9 @@ class JSONEncoder(json.JSONEncoder):
             o, settings = proxy.getProxiedObject(o), o.__json_settings__
         adapter = self.adapters.lookup_adapter(providedBy(o))
         if adapter is None:
+            if hasattr(o, "__json__"):
+                return o.__json__()
+
             raise TypeError("%r is not JSON serializable" % o)
         return adapter(o, **settings)
 

@@ -17,6 +17,9 @@ When and why you should use jsonpublish:
 
 * Sometimes you want to alter serialization for some objects.
 
+* You want easily append json serialization in your class
+
+
 Custom types serialization
 --------------------------
 
@@ -51,6 +54,32 @@ Now you can serialize your ``User`` objects::
   >>> from jsonpublish import dumps
   >>> print dumps(User("andrey", 1987))
   {"username": "andrey", "birthday": 1987}
+
+
+Custom types serialization with __json__ method
+-----------------------------------------------
+
+Same that previous example but now you use ``__json__`` method to define
+the JSON serialization::
+
+  class User(object):
+
+    def __init__(self, username, birthday):
+      self.username = username
+      self.birthday = birthday
+
+    def __json__(self):
+      return {
+        "username": user.username,
+        "birthday": user.birthday
+      }
+
+Now you can serialize your ``User`` objects::
+
+  >>> from jsonpublish import dumps
+  >>> print dumps(User("andrey", 1987))
+  {"username": "andrey", "birthday": 1987}
+
 
 Parametrized adapters
 ---------------------
